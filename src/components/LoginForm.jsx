@@ -21,7 +21,7 @@ export default function LoginForm({
         <label>
           password
           <input 
-            type="text" 
+            type="password" 
             value={password}
             onChange={({ target }) => setPassword(target.value)}
           />

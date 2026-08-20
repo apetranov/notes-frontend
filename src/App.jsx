@@ -111,7 +111,7 @@ const App = () => {
       important: Math.random < 0.5,
     };
 
-    const returnedNote = noteService.create(noteObject);
+    const returnedNote = await noteService.create(noteObject);
     setNotes(notes.concat(returnedNote));
     setNewNote("");
 

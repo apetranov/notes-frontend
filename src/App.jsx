@@ -20,6 +20,10 @@ const App = () => {
   const [user, setUser] = useState(null);
   const [loginVisible, setLoginVisible] = useState(false);
 
+  const handleSetNotes = (returnedNote) => {
+    setNotes(notes.concat(returnedNote));
+  }
+
   const handleLogin = async (event) => {
     event.preventDefault();
 
@@ -97,35 +101,7 @@ const App = () => {
     const user = await userService.getByUsername(username);
     return user;
   }
-  const addNote = async (event) => {
-    event.preventDefault();
-    if (!user) {
-      alert("no user");
-      return;
-    }
-    const usr = await getUserByUsername(user.username);
-    // console.log("user in add Note: ", usr);
-    const noteObject = {
-      userId: usr.id,
-      content: newNote,
-      important: Math.random < 0.5,
-    };
-
-    const returnedNote = await noteService.create(noteObject);
-    setNotes(notes.concat(returnedNote));
-    setNewNote("");
-
-    // noteService.create(noteObject).then((returnedNote) => {
-    //   setNotes(notes.concat(returnedNote));
-    //   setNewNote("");
-    // });
-    // console.log("button clicked", event.target);
-  };
-
-  const handleNoteChange = (event) => {
-    console.log(event.target.value);
-    setNewNote(event.target.value);
-  };
+  
 
   const loginForm = () => {
     const hideWhenVisible = { display: loginVisible ? "none" : "" };
@@ -234,9 +210,12 @@ const App = () => {
           </button>
           <Togglable buttonLabel="new note">
               <NoteForm
-              addNote={addNote}
+              // addNote={addNote}
               newNote={newNote}
-              handleNoteChange={handleNoteChange}
+              // handleNoteChange={handleNoteChange}
+              handleSetNotes={handleSetNotes}
+              getUserByUsername={getUserByUsername}
+              user={user}
             />
           </Togglable>
           

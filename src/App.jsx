@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Note from "./components/Note";
 import axios from "axios";
 import noteService from "./services/notes";
@@ -19,6 +19,14 @@ const App = () => {
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
   const [loginVisible, setLoginVisible] = useState(false);
+
+  const noteFormRef = useRef();
+
+  const noteForm = () => (
+    <Togglable buttonLabel="new note" ref={noteFormRef}>
+      <NoteForm createNote={createNote} />
+    </Togglable>
+  )
 
   const handleSetNotes = (returnedNote) => {
     setNotes(notes.concat(returnedNote));
@@ -92,7 +100,8 @@ const App = () => {
         content: note.content,
         important: note.important,
       };
-  
+      
+      noteFormRef.current.toggleVisibility();
       const returnedNote = await noteService.create(noteObject);
       setNotes(notes.concat(returnedNote));
       setNewNote("");
@@ -235,7 +244,7 @@ const App = () => {
           >
             logout
           </button>
-          <Togglable buttonLabel="new note">
+          <Togglable buttonLabel="new note" ref={noteFormRef}>
               <NoteForm
               // addNote={addNote}
               // newNote={newNote}

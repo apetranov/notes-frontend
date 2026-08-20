@@ -79,6 +79,32 @@ const App = () => {
   //   getByUsername();
   // })
 
+  const createNote = async (note) => {
+      // event.preventDefault();
+      if (!user) {
+        alert("no user");
+        return;
+      }
+      const usr = await getUserByUsername(user.username);
+      // console.log("user in add Note: ", usr);
+      const noteObject = {
+        userId: usr.id,
+        content: note.content,
+        important: note.important,
+      };
+  
+      const returnedNote = await noteService.create(noteObject);
+      setNotes(notes.concat(returnedNote));
+      setNewNote("");
+  
+      // noteService.create(noteObject).then((returnedNote) => {
+      //   setNotes(notes.concat(returnedNote));
+      //   setNewNote("");
+      // });
+      // console.log("button clicked", event.target);
+    };
+  
+
   useEffect(() => {
 
     noteService.getAll().then((initialNotes) => setNotes(initialNotes));
@@ -119,6 +145,7 @@ const App = () => {
       </div>
     );
   };
+  
 
   // const handleLogin = (event) => {
   //   event.preventDefault();
@@ -211,11 +238,12 @@ const App = () => {
           <Togglable buttonLabel="new note">
               <NoteForm
               // addNote={addNote}
-              newNote={newNote}
-              // handleNoteChange={handleNoteChange}
-              handleSetNotes={handleSetNotes}
-              getUserByUsername={getUserByUsername}
-              user={user}
+              // newNote={newNote}
+              // // handleNoteChange={handleNoteChange}
+              // handleSetNotes={handleSetNotes}
+              // getUserByUsername={getUserByUsername}
+              // user={user}
+              createNote={createNote}
             />
           </Togglable>
           

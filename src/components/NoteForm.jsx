@@ -1,44 +1,29 @@
 import { useState } from "react";
-import noteService from '../services/notes'
+// import noteService from '../services/notes'
 
 export default function NoteForm({
-  handleSetNotes,
-  getUserByUsername,
-  user
+  createNote
 }) {
   const [newNote, setNewNote] = useState('');
+
   const addNote = async (event) => {
-      event.preventDefault();
-      if (!user) {
-        alert("no user");
-        return;
-      }
-      const usr = await getUserByUsername(user.username);
-      // console.log("user in add Note: ", usr);
-      const noteObject = {
-        userId: usr.id,
-        content: newNote,
-        important: true,
-      };
+    event.preventDefault();
+    createNote({
+      content: newNote,
+      important: true
+    })
+
+    setNewNote('');
+  }
+
   
-      const returnedNote = await noteService.create(noteObject);
-      handleSetNotes(returnedNote);
-      setNewNote("");
-  
-      // noteService.create(noteObject).then((returnedNote) => {
-      //   setNotes(notes.concat(returnedNote));
-      //   setNewNote("");
-      // });
-      // console.log("button clicked", event.target);
-    };
-  
-  const handleNoteChange = (event) => {
-    console.log(event.target.value);
-    setNewNote(event.target.value);
-  };
+  // const handleNoteChange = (event) => {
+  //   console.log(event.target.value);
+  //   setNewNote(event.target.value);
+  // };
   return (
     <form onSubmit={addNote}>
-      <input value={newNote} onChange={handleNoteChange} />
+      <input value={newNote} onChange={event => setNewNote(event.target.value)} />
       <button type="submit">save</button>
     </form>
   )

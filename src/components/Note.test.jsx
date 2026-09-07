@@ -3,7 +3,6 @@ import Note from "./Note";
 import { expect } from "vitest";
 import userEvent from "@testing-library/user-event";
 
-
 test("renders content", () => {
   const note = {
     content: "Component testing is done with react-testing-library",
@@ -56,12 +55,10 @@ test("clicking the button calls event handler once", async () => {
 
   const mockHandler = vi.fn();
 
-  render(
-    <Note note={note} toggleImportance={mockHandler} />
-  );
+  render(<Note note={note} toggleImportance={mockHandler} />);
 
   const user = userEvent.setup();
-  const button = screen.getByText('make not important');
+  const button = screen.getByText("make not important");
   await user.click(button);
 
   expect(mockHandler.mock.calls).toHaveLength(1);
@@ -70,10 +67,26 @@ test("clicking the button calls event handler once", async () => {
 test("renders important", async () => {
   const note = {
     content: "Test note",
-    important: false
+    important: false,
   };
-  render(<Note note={note} />)
 
-  const toggleImportanceButton = screen.getByRole('button');
-  expect(toggleImportanceButton.textContent).toBe('make important');
+  render(<Note note={note} />);
+
+  const toggleImportanceButton = screen.getByRole("button");
+  expect(toggleImportanceButton.textContent).toBe("make important");
+});
+
+test("li element exists in Note component", async () => {
+  const note = {
+    content: "note",
+    important: true,
+  };
+
+  render(<Note note={note} />);
+
+  // screen.debug();
+
+  const liElement = screen.getByRole('listitem');
+
+  expect(liElement).toBeInTheDocument();
 });

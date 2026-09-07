@@ -1,7 +1,8 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import Note from "./Note";
 import { expect } from "vitest";
 import userEvent from "@testing-library/user-event";
+
 
 test("renders content", () => {
   const note = {
@@ -64,4 +65,15 @@ test("clicking the button calls event handler once", async () => {
   await user.click(button);
 
   expect(mockHandler.mock.calls).toHaveLength(1);
+});
+
+test("renders important", async () => {
+  const note = {
+    content: "Test note",
+    important: false
+  };
+  render(<Note note={note} />)
+
+  const toggleImportanceButton = screen.getByRole('button');
+  expect(toggleImportanceButton.textContent).toBe('make important');
 });

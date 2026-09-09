@@ -64,7 +64,7 @@ test("clicking the button calls event handler once", async () => {
   expect(mockHandler.mock.calls).toHaveLength(1);
 });
 
-test("renders important", async () => {
+test("renders make important button", async () => {
   const note = {
     content: "Test note",
     important: false,
@@ -72,8 +72,9 @@ test("renders important", async () => {
 
   render(<Note note={note} />);
 
-  const toggleImportanceButton = screen.getByRole("button");
-  expect(toggleImportanceButton.textContent).toBe("make important");
+  const makeImportantButton = screen.getByText("make important");
+  // expect(toggleImportanceButton.textContent).toBe("make important");
+  expect(makeImportantButton).toBeInTheDocument();
 });
 
 test("li element exists in Note component", async () => {
@@ -89,4 +90,27 @@ test("li element exists in Note component", async () => {
   const liElement = screen.getByRole('listitem');
 
   expect(liElement).toBeInTheDocument();
+});
+
+test("renders make not important button", async () => {
+  const note = {
+    content: "Important note",
+    important: true
+  };
+
+  render(<Note note={note} />);
+
+  const makeNotImportantButton = screen.getByText('make not important');
+  expect(makeNotImportantButton).toBeInTheDocument();
+})
+
+test("mock change importance", async() => {
+  const note = {
+    content: "Just a note :)",
+    important: false
+  };
+
+  const makeImportant = vi.fn((note) => !note.important);
+
+  expect(makeImportant(note)).toBe(true);
 });

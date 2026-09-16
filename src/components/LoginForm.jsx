@@ -11,6 +11,7 @@ export default function LoginForm({
         <label>
           username
           <input 
+            placeholder="username"
             type="text" 
             value={username}
             onChange={({ target }) => setUsername(target.value)}
@@ -21,6 +22,7 @@ export default function LoginForm({
         <label>
           password
           <input 
+            placeholder="password"
             type="password" 
             value={password}
             onChange={({ target }) => setPassword(target.value)}

@@ -235,7 +235,7 @@ const App = () => {
       )}
       {user && (
         <div>
-          <p>{user.username} loggen in</p>
+          <p>{user.username} logged in</p>
           <button
             onClick={() => {
               window.localStorage.clear();

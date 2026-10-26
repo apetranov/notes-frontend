@@ -9,6 +9,7 @@ import LoginForm from "./components/LoginForm";
 import NoteForm from "./components/NoteForm";
 import NoteList from "./components/NoteList";
 import Togglable from "./components/Togglable";
+import Home from "./components/Home";
 import userService from './services/users'
 
 import {
@@ -140,56 +141,77 @@ const App = () => {
     );
   };
 
+  const padding = {
+    padding: 5
+  }
+
   return (
-    <div>
-      <h1>Notes</h1>
-      <Notification message={errorMessage} />
+    // <div>
+    //   <h1>Notes</h1>
+    //   <Notification message={errorMessage} />
 
-      {!user && (
-        <LoginForm
-          handleLogin={handleLogin}
-          username={username}
-          setUsername={setUsername}
-          password={password}
-          setPassword={setPassword}
-        />
-      )}
-      {user && (
-        <div>
-          <p>{user.username} logged in</p>
-          <button
-            onClick={() => {
-              window.localStorage.clear();
-              window.location.reload();
-            }}
-          >
-            logout
-          </button>
-          <Togglable buttonLabel="new note" ref={noteFormRef}>
-              <NoteForm
-              createNote={createNote}
-            />
-          </Togglable>
+    //   {!user && (
+    //     <LoginForm
+    //       handleLogin={handleLogin}
+    //       username={username}
+    //       setUsername={setUsername}
+    //       password={password}
+    //       setPassword={setPassword}
+    //     />
+    //   )}
+    //   {user && (
+    //     <div>
+    //       <p>{user.username} logged in</p>
+    //       <button
+    //         onClick={() => {
+    //           window.localStorage.clear();
+    //           window.location.reload();
+    //         }}
+    //       >
+    //         logout
+    //       </button>
+    //       <Togglable buttonLabel="new note" ref={noteFormRef}>
+    //           <NoteForm
+    //           createNote={createNote}
+    //         />
+    //       </Togglable>
           
-        </div>
-      )}
+    //     </div>
+    //   )}
 
+    //   <div>
+    //     <button onClick={() => setShowAll(!showAll)}>
+    //       show {showAll ? "important" : "all"}
+    //     </button>
+    //   </div>
+    //   <ul>
+    //     {notesToShow.map((note) => (
+    //       <Note
+    //         key={note.id}
+    //         note={note}
+    //         toggleImportance={() => toggleImportanceOf(note.id)}
+    //       />
+    //     ))}
+    //   </ul>
+    //   <Footer />
+    // </div>
+    <Router>
       <div>
-        <button onClick={() => setShowAll(!showAll)}>
-          show {showAll ? "important" : "all"}
-        </button>
+        <Link style={padding} to="/">home</Link>
+        <Link style={padding} to="/notes">notes</Link>
+        <Link style={padding} to="/create">new note</Link>
       </div>
-      <ul>
-        {notesToShow.map((note) => (
-          <Note
-            key={note.id}
-            note={note}
-            toggleImportance={() => toggleImportanceOf(note.id)}
-          />
-        ))}
-      </ul>
-      <Footer />
-    </div>
+
+      <Routes>
+        <Route path="/notes" element={
+          <NoteList notes={notes} />
+        } />
+        <Route path="/create" element={
+          <NoteForm createNote={createNote} />
+        } />
+        <Route path="/" element={<Home />} />
+      </Routes>
+    </Router>
   );
 };
 

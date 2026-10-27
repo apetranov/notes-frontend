@@ -117,7 +117,7 @@ const App = () => {
   if (!notes) return null;
   console.log("render", notes.length, "notes");
 
-  const notesToShow = showAll ? notes : notes.filter((note) => note.important);
+  
   const getUserByUsername = async (username) => {
     const user = await userService.getByUsername(username);
     return user;
@@ -146,56 +146,9 @@ const App = () => {
   }
 
   return (
-    // <div>
-    //   <h1>Notes</h1>
-    //   <Notification message={errorMessage} />
-
-    //   {!user && (
-    //     <LoginForm
-    //       handleLogin={handleLogin}
-    //       username={username}
-    //       setUsername={setUsername}
-    //       password={password}
-    //       setPassword={setPassword}
-    //     />
-    //   )}
-    //   {user && (
-    //     <div>
-    //       <p>{user.username} logged in</p>
-    //       <button
-    //         onClick={() => {
-    //           window.localStorage.clear();
-    //           window.location.reload();
-    //         }}
-    //       >
-    //         logout
-    //       </button>
-    //       <Togglable buttonLabel="new note" ref={noteFormRef}>
-    //           <NoteForm
-    //           createNote={createNote}
-    //         />
-    //       </Togglable>
-          
-    //     </div>
-    //   )}
-
-    //   <div>
-    //     <button onClick={() => setShowAll(!showAll)}>
-    //       show {showAll ? "important" : "all"}
-    //     </button>
-    //   </div>
-    //   <ul>
-    //     {notesToShow.map((note) => (
-    //       <Note
-    //         key={note.id}
-    //         note={note}
-    //         toggleImportance={() => toggleImportanceOf(note.id)}
-    //       />
-    //     ))}
-    //   </ul>
-    //   <Footer />
-    // </div>
-    <Router>
+    
+    <div>
+      <Router>
       <div>
         <Link style={padding} to="/">home</Link>
         <Link style={padding} to="/notes">notes</Link>
@@ -204,7 +157,20 @@ const App = () => {
 
       <Routes>
         <Route path="/notes" element={
-          <NoteList notes={notes} />
+          <NoteList notes={notes}
+            showAll={showAll}
+            setShowAll={setShowAll}
+            errorMessage={errorMessage}
+            user={user}
+            handleLogin={handleLogin}
+            username={username}
+            setUsername={setUsername}
+            password={password}
+            setPassword={setPassword}
+            noteFormRef={noteFormRef}
+            createNote={createNote}
+            toggleImportanceOf={toggleImportanceOf}
+          />
         } />
         <Route path="/create" element={
           <NoteForm createNote={createNote} />
@@ -212,6 +178,8 @@ const App = () => {
         <Route path="/" element={<Home />} />
       </Routes>
     </Router>
+    <Footer />
+    </div>
   );
 };
 

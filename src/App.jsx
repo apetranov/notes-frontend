@@ -7,8 +7,15 @@ import Footer from "./components/Footer";
 import loginService from "./services/login";
 import LoginForm from "./components/LoginForm";
 import NoteForm from "./components/NoteForm";
+import NoteList from "./components/NoteList";
 import Togglable from "./components/Togglable";
+import Home from "./components/Home";
 import userService from './services/users'
+
+import {
+  BrowserRouter as Router,
+  Routes, Route, Link
+} from 'react-router-dom';
 
 const App = () => {
   const [notes, setNotes] = useState(null);
@@ -72,21 +79,6 @@ const App = () => {
       });
   };
 
-  // useEffect(() => {
-  //   const getAllUsers = async () => {
-  //     const users = await userService.getAll();
-  //     console.log("users:",users);
-  //     return users;
-  //   }
-  //   const getByUsername = async () => {
-  //     const user = await userService.getByUsername("lex");
-  //     console.log("user:", user);
-  //     return user;
-  //   }
-  //   getAllUsers();
-  //   getByUsername();
-  // })
-
   const createNote = async (note) => {
       // event.preventDefault();
       if (!user) {
@@ -101,16 +93,10 @@ const App = () => {
         important: note.important,
       };
       
-      noteFormRef.current.toggleVisibility();
+      // noteFormRef.current.toggleVisibility();
       const returnedNote = await noteService.create(noteObject);
       setNotes(notes.concat(returnedNote));
       setNewNote("");
-  
-      // noteService.create(noteObject).then((returnedNote) => {
-      //   setNotes(notes.concat(returnedNote));
-      //   setNewNote("");
-      // });
-      // console.log("button clicked", event.target);
     };
   
 
@@ -131,7 +117,7 @@ const App = () => {
   if (!notes) return null;
   console.log("render", notes.length, "notes");
 
-  const notesToShow = showAll ? notes : notes.filter((note) => note.important);
+  
   const getUserByUsername = async (username) => {
     const user = await userService.getByUsername(username);
     return user;
@@ -154,131 +140,45 @@ const App = () => {
       </div>
     );
   };
-  
 
-  // const handleLogin = (event) => {
-  //   event.preventDefault();
-  //   console.log('logging in with', username, password);
-  // }
-
-  // const loginForm = () => (
-  //   <form onSubmit={handleLogin}>
-  //     <div>
-  //       <label>
-  //         username
-  //         <input
-  //           type="text"
-  //           value={username}
-  //           onChange={({ target }) => setUsername(target.value)}
-  //         />
-  //       </label>
-  //     </div>
-  //     <div>
-  //       <label>
-  //         password
-  //         <input
-  //           type="text"
-  //           value={password}
-  //           onChange={({ target }) => setPassword(target.value)}
-  //         />
-  //       </label>
-  //     </div>
-  //     <button type="submit">login</button>
-  //   </form>
-  // )
-
-  // const noteForm = () => (
-  //   <form onSubmit={addNote}>
-  //     <input value={newNote} onChange={handleNoteChange} />
-  //     <button type="submit">save</button>
-  //   </form>
-  // )
+  const padding = {
+    padding: 5
+  }
 
   return (
+    
     <div>
-      <h1>Notes</h1>
-      <Notification message={errorMessage} />
-      {/* 
-      <h2>Login</h2>
-      <form onSubmit={handleLogin}>
-        <div>
-          <label>
-            username
-            <input 
-              type="text" 
-              value={username}
-              onChange={({ target }) => setUsername(target.value)}
-            />
-          </label>
-        </div>
-        <div>
-          <label>
-            password
-            <input 
-              type="password" 
-              value={password}
-              onChange={({ target }) => setPassword(target.value)}
-            />
-          </label>
-        </div>
-        <button type="submit">login</button>
-      </form> */}
-
-      {!user && (
-        <LoginForm
-          handleLogin={handleLogin}
-          username={username}
-          setUsername={setUsername}
-          password={password}
-          setPassword={setPassword}
-        />
-      )}
-      {user && (
-        <div>
-          <p>{user.username} logged in</p>
-          <button
-            onClick={() => {
-              window.localStorage.clear();
-              window.location.reload();
-            }}
-          >
-            logout
-          </button>
-          <Togglable buttonLabel="new note" ref={noteFormRef}>
-              <NoteForm
-              // addNote={addNote}
-              // newNote={newNote}
-              // // handleNoteChange={handleNoteChange}
-              // handleSetNotes={handleSetNotes}
-              // getUserByUsername={getUserByUsername}
-              // user={user}
-              createNote={createNote}
-            />
-          </Togglable>
-          
-        </div>
-      )}
-
+      <Router>
       <div>
-        <button onClick={() => setShowAll(!showAll)}>
-          show {showAll ? "important" : "all"}
-        </button>
+        <Link style={padding} to="/">home</Link>
+        <Link style={padding} to="/notes">notes</Link>
+        <Link style={padding} to="/create">new note</Link>
       </div>
-      <ul>
-        {notesToShow.map((note) => (
-          <Note
-            key={note.id}
-            note={note}
-            toggleImportance={() => toggleImportanceOf(note.id)}
-          />
-        ))}
-      </ul>
-      {/* <form onSubmit={addNote}>
-        <input value={newNote} onChange={handleNoteChange} />
-        <button type="submit">save</button>
-      </form> */}
 
-      <Footer />
+      <Routes>
+        <Route path="/notes" element={
+          <NoteList notes={notes}
+            showAll={showAll}
+            setShowAll={setShowAll}
+            errorMessage={errorMessage}
+            user={user}
+            handleLogin={handleLogin}
+            username={username}
+            setUsername={setUsername}
+            password={password}
+            setPassword={setPassword}
+            noteFormRef={noteFormRef}
+            createNote={createNote}
+            toggleImportanceOf={toggleImportanceOf}
+          />
+        } />
+        <Route path="/create" element={
+          <NoteForm createNote={createNote} />
+        } />
+        <Route path="/" element={<Home />} />
+      </Routes>
+    </Router>
+    <Footer />
     </div>
   );
 };

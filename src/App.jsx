@@ -93,7 +93,7 @@ const App = () => {
         important: note.important,
       };
       
-      noteFormRef.current.toggleVisibility();
+      // noteFormRef.current.toggleVisibility();
       const returnedNote = await noteService.create(noteObject);
       setNotes(notes.concat(returnedNote));
       setNewNote("");

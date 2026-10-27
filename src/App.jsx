@@ -156,6 +156,9 @@ const App = () => {
       </div>
 
       <Routes>
+        <Route path="/notes/:id" element={
+          <Note notes={notes} toggleImportanceOf={toggleImportanceOf} />
+        } />
         <Route path="/notes" element={
           <NoteList notes={notes}
             showAll={showAll}

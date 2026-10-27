@@ -3,6 +3,7 @@ import LoginForm from "./LoginForm";
 import Togglable from "./Togglable";
 import NoteForm from "./NoteForm";
 import Notification from "./Notification";
+import { Link } from "react-router-dom";
 
 const NoteList = ({ 
     notes, showAll, setShowAll, errorMessage, 
@@ -52,11 +53,9 @@ const NoteList = ({
       </div>
       <ul>
         {notesToShow.map((note) => (
-          <Note
-            key={note.id}
-            note={note}
-            toggleImportance={() => toggleImportanceOf(note.id)}
-          />
+          <li key={note.id}>
+            <Link to={`/notes/${note.id}`}>{note.content}</Link>
+          </li>
         ))}
       </ul>
     </div>

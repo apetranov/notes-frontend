@@ -18,3 +18,12 @@ h1 {
     padding: 10px;
     margin-bottom: 10px;
 }
+
+.success {
+    color: green;
+    background-color: lightgreen;
+    border: darkgreen;
+    padding: 2rem;
+    font-weight: bold;
+    font-size: 2rem;
+}

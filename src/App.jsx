@@ -103,7 +103,12 @@ const App = () => {
         setSuccessMessage(null);
       }, 5000);
     };
-  
+    
+    const deleteNote = (id) => {
+      noteService.remove(id).then(() => {
+        setNotes(notes.filter(n => n.id !== id));
+      });
+    };
 
   useEffect(() => {
 
@@ -163,7 +168,7 @@ const App = () => {
 
       <Routes>
         <Route path="/notes/:id" element={
-          <Note notes={notes} toggleImportanceOf={toggleImportanceOf} />
+          <Note deleteNote={deleteNote} notes={notes} toggleImportanceOf={toggleImportanceOf} />
         } />
         <Route path="/notes" element={
           <NoteList notes={notes}

@@ -22,6 +22,7 @@ const App = () => {
   const [newNote, setNewNote] = useState("");
   const [showAll, setShowAll] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
+  const [successMessage, setSuccessMessage] = useState(null);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
@@ -97,6 +98,10 @@ const App = () => {
       const returnedNote = await noteService.create(noteObject);
       setNotes(notes.concat(returnedNote));
       setNewNote("");
+      setSuccessMessage("Note created successfully!");
+      setTimeout(() => {
+        setSuccessMessage(null);
+      }, 5000);
     };
   
 
@@ -148,6 +153,7 @@ const App = () => {
   return (
     
     <div>
+      {successMessage && <Notification message={successMessage} />}
       <Router>
       <div>
         <Link style={padding} to="/">home</Link>
